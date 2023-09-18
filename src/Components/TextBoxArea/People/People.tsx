@@ -1,15 +1,23 @@
+import CharacterModel from "../../../Models/CharacterModel";
 import "./People.css";
 
-function People(): JSX.Element {
+interface PeopleProps {
+  person: CharacterModel;
+}
+
+function People(person: PeopleProps): JSX.Element {
   return (
     <div className="text-box">
-      <h2>People</h2>
-      <small>2018-2019</small>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio cum
-        mollitia eius quasi officia, laborum dolorum doloremque non pariatur?
-        Illo?
-      </p>
+      <h2>{person?.person?.name}</h2>
+      <p>height:{person?.person?.height}</p>
+      <p>mass:{person?.person?.mass}</p>
+      <p>hair_color:{person?.person?.hair_color}</p>
+      <p>skin_color:{person?.person?.skin_color}</p>
+      <p>eye_color:{person?.person?.eye_color}</p>
+      <p>birth_year:{person?.person?.birth_year}</p>
+      <p>gender:{person?.person?.gender}</p>
+      <p>homeworld:{person?.person?.homeworld}</p>
+
       <span className="left-container-arrow"></span>
     </div>
   );
