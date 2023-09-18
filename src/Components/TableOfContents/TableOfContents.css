@@ -1,0 +1,42 @@
+.toc-container {
+  width: 200px;
+}
+
+.toc-wrapper {
+  color: white;
+  width: 200px;
+  display: grid;
+  gap: 10px;
+  align-items: center;
+}
+
+.toc-item {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 5px;
+  /* margin-left: 5px; */
+  margin-top: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.toc-content {
+  color: black;
+}
+.toc-image {
+  height: 100px;
+  width: 100px;
+}
+/* toc */
+.toc-item:hover {
+  margin-left: 30px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  cursor: pointer;
+}
+
+.toc-item {
+  width: 170px;
+  transition: 1s;
+}
