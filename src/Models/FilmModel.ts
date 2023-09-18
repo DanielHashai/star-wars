@@ -5,7 +5,12 @@ class FilmModel {
     public director?: string;
     public producer?: string;
     public release_date?: string;
-    public characters?: number[]
+    public characters?: string[];
+    public planets?: string[];
+    public starships?: string[];
+    public vehicles?: string[];
+    public species?: string[];
+
 
 }
 export default FilmModel
