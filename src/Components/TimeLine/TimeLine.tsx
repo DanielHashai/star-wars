@@ -176,7 +176,7 @@ function TimeLine(): JSX.Element {
     <div ref={animationRef} className="timeline">
       <div style={{ marginTop: "120px" }}>
         <div className="container right-container">
-          <img src={planetIMG} alt="" />
+          <img src={filmIMG} alt="" />
           <div className="underImg-right ">
             Film
             <br />
@@ -304,7 +304,7 @@ function TimeLine(): JSX.Element {
           )}
         </div>
         <div className="container left-container">
-          <img src={filmIMG} alt="" />
+          <img src={starShipIMG} alt="" />
           <div className="underImg">
             StarShips
             <br />
@@ -360,7 +360,7 @@ function TimeLine(): JSX.Element {
           )}
         </div>
         <div className="container right-container">
-          <img src={speciesIMG} alt="" />
+          <img src={vehiclesIMG} alt="" />
           <div className="underImg-right">
             Vehicles
             <br />
@@ -411,7 +411,7 @@ function TimeLine(): JSX.Element {
           )}
         </div>
         <div className="container left-container">
-          <img src={vehiclesIMG} alt="" />
+          <img src={speciesIMG} alt="" />
           <div className="underImg">
             Species
             <br />
