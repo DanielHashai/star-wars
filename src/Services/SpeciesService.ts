@@ -1,6 +1,4 @@
 import axios from "axios";
-import PlanetModel from "../Models/PlanetModel";
-import StarShipModel from "../Models/StarShipModel";
 import SpeciesModel from "../Models/SpeciesModel";
 
 async function getSpecies(type: string): Promise<SpeciesModel> {

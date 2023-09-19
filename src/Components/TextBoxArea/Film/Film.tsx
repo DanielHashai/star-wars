@@ -1,4 +1,3 @@
-import "./Film.css";
 import Carousel from "react-bootstrap/Carousel";
 function Film(): JSX.Element {
   return (

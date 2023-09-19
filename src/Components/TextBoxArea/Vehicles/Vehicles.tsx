@@ -1,4 +1,3 @@
-import "./Vehicles.css";
 import Carousel from "react-bootstrap/Carousel";
 function Vehicles(): JSX.Element {
   return (

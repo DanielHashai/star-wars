@@ -24,7 +24,6 @@ import { AppContext } from "../../Context/appContext";
 import CharacterModel from "../../Models/CharacterModel";
 
 function TimeLine(): JSX.Element {
-  // const [films, setFilms] = useState<FilmModel>();
   const { currentFilm, setCurrentFilm } = useContext(AppContext);
   const [people, setPeople] = useState<CharacterModel[]>();
   const [planets, setPlanets] = useState([]);
@@ -40,14 +39,11 @@ function TimeLine(): JSX.Element {
     const startShipsURLs = currentFilm?.starships;
     const vehicleURLs = currentFilm?.vehicles;
     const speciesURLs = currentFilm?.species;
-    // this down here is for people
+
     if (characters && characters?.length > 0) {
-      // Create an array to hold promises
       const promises = [];
 
       for (let i = 0; i < characters.length; i++) {
-        // Push each promise into the promises array
-
         promises.push(
           PeopleService.getPeople(characters[i])
             .then((res) => {
@@ -55,29 +51,24 @@ function TimeLine(): JSX.Element {
             })
             .catch((err) => {
               console.log(err);
-              return null; // Handle errors gracefully
+              return null;
             })
         );
       }
 
-      // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
-          // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
 
           setPeople(validResponses);
         })
         .catch((err) => console.error(err));
     }
-    // this down here is for planets
+
     if (planetsURLs && planetsURLs?.length > 0) {
-      // Create an array to hold promises
       const promises = [];
 
       for (let i = 0; i < planetsURLs.length; i++) {
-        // Push each promise into the promises array
-
         promises.push(
           PlanetService.getPlanets(planetsURLs[i])
             .then((res) => {
@@ -85,29 +76,24 @@ function TimeLine(): JSX.Element {
             })
             .catch((err) => {
               console.log(err);
-              return null; // Handle errors gracefully
+              return null;
             })
         );
       }
 
-      // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
-          // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
 
           setPlanets(validResponses);
         })
         .catch((err) => console.error(err));
     }
-    // this down here is for star ships
+
     if (startShipsURLs && startShipsURLs?.length > 0) {
-      // Create an array to hold promises
       const promises = [];
 
       for (let i = 0; i < startShipsURLs.length; i++) {
-        // Push each promise into the promises array
-
         promises.push(
           StarShipsService.getStarShips(startShipsURLs[i])
             .then((res) => {
@@ -115,15 +101,13 @@ function TimeLine(): JSX.Element {
             })
             .catch((err) => {
               console.log(err);
-              return null; // Handle errors gracefully
+              return null;
             })
         );
       }
 
-      // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
-          // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
 
           setStarShips(validResponses);
@@ -131,12 +115,9 @@ function TimeLine(): JSX.Element {
         .catch((err) => console.error(err));
     }
     if (vehicleURLs && vehicleURLs?.length > 0) {
-      // Create an array to hold promises
       const promises = [];
 
       for (let i = 0; i < vehicleURLs.length; i++) {
-        // Push each promise into the promises array
-
         promises.push(
           VehiclesService.getVehicles(vehicleURLs[i])
             .then((res) => {
@@ -144,15 +125,13 @@ function TimeLine(): JSX.Element {
             })
             .catch((err) => {
               console.log(err);
-              return null; // Handle errors gracefully
+              return null;
             })
         );
       }
 
-      // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
-          // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
 
           setVehicles(validResponses);
@@ -160,12 +139,9 @@ function TimeLine(): JSX.Element {
         .catch((err) => console.error(err));
     }
     if (speciesURLs && speciesURLs?.length > 0) {
-      // Create an array to hold promises
       const promises = [];
 
       for (let i = 0; i < speciesURLs.length; i++) {
-        // Push each promise into the promises array
-
         promises.push(
           SpeciesService.getSpecies(speciesURLs[i])
             .then((res) => {
@@ -173,15 +149,13 @@ function TimeLine(): JSX.Element {
             })
             .catch((err) => {
               console.log(err);
-              return null; // Handle errors gracefully
+              return null;
             })
         );
       }
 
-      // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
-          // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
           setSpecies(validResponses);
         })
@@ -191,23 +165,16 @@ function TimeLine(): JSX.Element {
 
   useEffect(() => {}, [people]);
   useEffect(() => {
-    // Your existing code for fetching data
-
-    // Trigger animation by adding a CSS class using the ref
     animationRef.current.classList.add("movedown");
 
-    // Remove the animation class after the animation duration (1s in this case)
     setTimeout(() => {
       animationRef.current.classList.remove("movedown");
-    }, 1000); // Adjust this delay as needed
-
-    // ...
+    }, 1000);
   }, [currentFilm]);
 
   return (
     <div ref={animationRef} className="timeline">
-      
-      <div style={{marginTop:"120px"}}>
+      <div style={{ marginTop: "120px" }}>
         <div className="container right-container">
           <img src={planetIMG} alt="" />
           <div className="underImg-right ">
@@ -215,11 +182,11 @@ function TimeLine(): JSX.Element {
             <br />
             Name: {currentFilm?.title}
           </div>
-          {currentFilm?.title.length>1 ? (
+          {currentFilm?.title.length > 1 ? (
             <>
               <Carousel
                 style={{
-                  height: "1000px",
+                  height: "1200px",
                 }}
                 className="text-box"
               >
@@ -245,7 +212,7 @@ function TimeLine(): JSX.Element {
               <span className="right-container-arrow"></span>
             </>
           ) : (
-            <Film/>
+            <Film />
           )}
         </div>
         <div className="container left-container">
@@ -282,7 +249,6 @@ function TimeLine(): JSX.Element {
                       birth_year:{person?.birth_year}
                     </p>
                     <p style={{ color: "white" }}>gender:{person?.gender}</p>
-                    {/* <p style={{ color: "white" }}>gender:{person?.gender}</p> */}
                   </Carousel.Item>
                 ))}
               </Carousel>

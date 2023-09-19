@@ -1,5 +1,3 @@
-import CharacterModel from "../../../Models/CharacterModel";
-import "./People.css";
 import Carousel from "react-bootstrap/Carousel";
 
 function People(): JSX.Element {

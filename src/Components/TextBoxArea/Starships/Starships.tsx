@@ -1,4 +1,4 @@
-import "./Starships.css";
+
 import Carousel from "react-bootstrap/Carousel";
 function Starships(): JSX.Element {
   return (

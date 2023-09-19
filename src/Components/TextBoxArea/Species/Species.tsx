@@ -1,4 +1,4 @@
-import "./Species.css";
+
 import Carousel from "react-bootstrap/Carousel";
 
 function Species(): JSX.Element {

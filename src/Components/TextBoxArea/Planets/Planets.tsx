@@ -1,4 +1,3 @@
-import "./Planets.css";
 import Carousel from "react-bootstrap/Carousel";
 function Planets(): JSX.Element {
   return (
