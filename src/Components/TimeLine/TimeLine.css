@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
+
   box-sizing: border-box;
 }
 body {
@@ -9,15 +9,21 @@ body {
 }
 .timeline {
   position: relative;
-  max-width: 1200px;
-  /* margin: 100px auto; */
+  font-family: 'IBM Plex Mono', monospace;
+  margin: 50px auto;
 }
 .container {
   padding: 10px 50px;
   position: relative;
-  width: 50%;
+  width: 100%;
   animation: movedown 1s linear forwards;
   opacity: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 50px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  margin-bottom: 100px;
+}
+.movedown {
+  animation: movedown 1s linear forwards;
 }
 
 .container:nth-child(2) {
@@ -57,7 +63,7 @@ body {
   width: 400px;
 }
 .right-container {
-  left: 50%;
+  left: 25%;
   width: 400px;
 }
 .container img {
@@ -88,7 +94,7 @@ body {
   position: absolute;
   width: 6px;
   height: 100%;
-  background: #fff;
+  background: #2196f3;
   top: 0;
   left: 75%;
   margin-left: -px;
@@ -155,7 +161,7 @@ body {
   }
   .left-container img,
   .right-container img {
-    left: 10px;
+    left: 20px;
   }
   .left-container-arrow,
   .right-container-arrow {
@@ -164,13 +170,32 @@ body {
     left: 65px;
   }
   .underImg {
+    position: absolute;
+    width: 47px;
+    right: 200px;
+    height: 50px;
+    top: 90px;
+    z-index: 10;
+    color: white;
+    text-transform: uppercase;
+    left: 5px;
+    font-size: 11px;
+  }
+  .container {
+    width: 300px;
+  }
+  .underImg-right {
+    font-size: 11px;
+  }
+}
+.underImg-right {
   position: absolute;
   width: 47px;
-  right: 100px;
+  left: 5px;
+
   height: 50px;
-  top: -10px;
+  top: 90px;
   z-index: 10;
   color: white;
   text-transform: uppercase;
-}
 }

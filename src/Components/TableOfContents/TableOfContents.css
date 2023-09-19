@@ -11,7 +11,7 @@
 }
 
 .toc-item {
-  background-color: #fff;
+  background-color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@
   border-bottom-right-radius: 10px;
 }
 .toc-content {
-  color: black;
+  color: white;
 }
 .toc-image {
   height: 100px;
@@ -30,13 +30,29 @@
 }
 /* toc */
 .toc-item:hover {
-  margin-left: 30px;
+  margin-left: 35px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   cursor: pointer;
 }
 
 .toc-item {
-  width: 170px;
+  width: 250px;
   transition: 1s;
+  box-shadow: 0 4px 200px rgba(0, 0, 0, 0.5), 0 1px 100px rgba(0, 0, 0, 0.8);
+
+}
+@media screen and (max-width: 700px) {
+  .toc-item {
+    width: 160px;
+    
+  
+  }
+}
+@media screen and (max-width: 900px) {
+  .toc-item {
+    width: 180px;
+    
+  
+  }
 }

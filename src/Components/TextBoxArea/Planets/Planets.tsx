@@ -1,17 +1,27 @@
 import "./Planets.css";
-
+import Carousel from "react-bootstrap/Carousel";
 function Planets(): JSX.Element {
   return (
-    <div className="text-box">
-      <h2>Planets</h2>
-      <small>2018-2019</small>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio cum
-        mollitia eius quasi officia, laborum dolorum doloremque non pariatur?
-        Illo?
-      </p>
+    <>
+      <Carousel
+        style={{
+          height: "300px",
+        }}
+        className="text-box"
+      >
+        <Carousel.Item
+          style={{
+            display: "grid",
+            justifyContent: "center",
+            placeItems: "center",
+          }}
+        >
+          <h3 style={{ color: "white" }}>Planets</h3>
+          <p style={{ color: "white" }}>Select a movie</p>
+        </Carousel.Item>
+      </Carousel>
       <span className="right-container-arrow"></span>
-    </div>
+    </>
   );
 }
 

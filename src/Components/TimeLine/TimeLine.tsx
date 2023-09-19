@@ -12,13 +12,14 @@ import filmIMG from "../../Assets/film.png";
 import speciesIMG from "../../Assets/species.jpeg";
 import vehiclesIMG from "../../Assets/vehicles.png";
 import starShipIMG from "../../Assets/starship.jpeg";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import FilmModel from "../../Models/FilmModel";
 import PeopleService from "../../Services/PeopleService";
 import PlanetService from "../../Services/PlanetService";
 import StarShipsService from "../../Services/StarShipService";
 import VehiclesService from "../../Services/VehicleService";
+import SpeciesService from "../../Services/SpeciesService";
 import { AppContext } from "../../Context/appContext";
 import CharacterModel from "../../Models/CharacterModel";
 import Slider from "../Slider/Slider";
@@ -31,12 +32,14 @@ function TimeLine(): JSX.Element {
   const [species, setSpecies] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [starShips, setStarShips] = useState([]);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     const characters = currentFilm?.characters;
     const planetsURLs = currentFilm?.planets;
     const startShipsURLs = currentFilm?.starships;
     const vehicleURLs = currentFilm?.vehicles;
+    const speciesURLs = currentFilm?.species;
     // this down here is for people
     if (characters && characters?.length > 0) {
       // Create an array to hold promises
@@ -144,7 +147,7 @@ function TimeLine(): JSX.Element {
         // Push each promise into the promises array
 
         promises.push(
-          StarShipsService.getStarShips(vehicleURLs[i])
+          VehiclesService.getVehicles(vehicleURLs[i])
             .then((res) => {
               // console.log(res);
               return res;
@@ -168,218 +171,317 @@ function TimeLine(): JSX.Element {
         })
         .catch((err) => console.error(err));
     }
+    if (speciesURLs && speciesURLs?.length > 0) {
+      // Create an array to hold promises
+      const promises = [];
+
+      for (let i = 0; i < speciesURLs.length; i++) {
+        // Push each promise into the promises array
+
+        promises.push(
+          SpeciesService.getSpecies(speciesURLs[i])
+            .then((res) => {
+              // console.log(res);
+              return res;
+            })
+            .catch((err) => {
+              console.log(err);
+              return null; // Handle errors gracefully
+            })
+        );
+      }
+      // console.log(promises);
+
+      // Use Promise.all to wait for all promises to resolve
+      Promise.all(promises)
+        .then((responses) => {
+          // Filter out any null responses (failed requests)
+          const validResponses = responses.filter((res) => res !== null);
+          console.log(validResponses);
+
+          setSpecies(validResponses);
+        })
+        .catch((err) => console.error(err));
+    }
   }, [currentFilm]);
 
   useEffect(() => {
     console.log("People state has been updated:", people);
     console.log("People state has been updated:", planets);
   }, [people]);
+  useEffect(() => {
+    // Your existing code for fetching data
+
+    // Trigger animation by adding a CSS class using the ref
+    animationRef.current.classList.add("movedown");
+
+    // Remove the animation class after the animation duration (1s in this case)
+    setTimeout(() => {
+      animationRef.current.classList.remove("movedown");
+    }, 1000); // Adjust this delay as needed
+
+    // ...
+  }, [currentFilm]);
+
   return (
-    <div className="timeline">
-      <div className="container left-container">
-        <img src={peopleIMG} alt="" />
-        <div className="underImg">
-          Characters
-          <br />
-          Total:{people?.length}
-        </div>
+    <div ref={animationRef} className="timeline">
+      <div style={{ height: "130px", width: "80%", marginBottom: "30px" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            fontSize: "30px",
+            color: "lightgreen",
+          }}
+        >
+          Title:{currentFilm?.title}
+        </h2>
+      </div>
+      <div>
+        <div className="container left-container">
+          <img src={peopleIMG} alt="" />
+          <div className="underImg">
+            Characters
+            <br />
+            Total:{people?.length}
+          </div>
 
-        {people?.length > 0 ? (
-          <>
-            <Carousel
-              style={{
-                height: "400px",
-              }}
-              className="text-box"
-            >
-              {people?.map((person, id) => (
-                <Carousel.Item key={id}>
-                  <h3 style={{ color: "white" }}>{person?.name}</h3>
-                  <p style={{ color: "white" }}>height:{person?.height}</p>
-                  <p style={{ color: "white" }}>mass:{person?.mass}</p>
-                  <p style={{ color: "white" }}>
-                    hair_color:{person?.hair_color}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    skin_color:{person?.skin_color}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    eye_color:{person?.eye_color}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    birth_year:{person?.birth_year}
-                  </p>
-                  <p style={{ color: "white" }}>gender:{person?.gender}</p>
-                  {/* <p style={{ color: "white" }}>gender:{person?.gender}</p> */}
-                </Carousel.Item>
-              ))}
-            </Carousel>
-            <span className="left-container-arrow"></span>
-          </>
-        ) : (
-          <Slider />
-        )}
-      </div>
-      <div className="container right-container">
-        <img src={planetIMG} alt="" />
-        <div className="underImg">
-          Planets
-          <br />
-          Total:{planets?.length}
+          {people?.length > 0 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "400px",
+                }}
+                className="text-box"
+              >
+                {people?.map((person, id) => (
+                  <Carousel.Item key={id}>
+                    <h3 style={{ color: "white" }}>{person?.name}</h3>
+                    <p style={{ color: "white" }}>height:{person?.height}</p>
+                    <p style={{ color: "white" }}>mass:{person?.mass}</p>
+                    <p style={{ color: "white" }}>
+                      hair_color:{person?.hair_color}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      skin_color:{person?.skin_color}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      eye_color:{person?.eye_color}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      birth_year:{person?.birth_year}
+                    </p>
+                    <p style={{ color: "white" }}>gender:{person?.gender}</p>
+                    {/* <p style={{ color: "white" }}>gender:{person?.gender}</p> */}
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <span className="left-container-arrow"></span>
+            </>
+          ) : (
+            <People />
+          )}
         </div>
-        {planets?.length > 0 ? (
-          <>
-            <Carousel
-              style={{
-                height: "400px",
-              }}
-              className="text-box"
-            >
-              {planets?.map((planet, id) => (
-                <Carousel.Item key={id}>
-                  <h3 style={{ color: "white" }}>{planet?.name}</h3>
-                  <p style={{ color: "white" }}>
-                    rotation_period:{planet?.rotation_period}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    orbital_period:{planet?.orbital_period}
-                  </p>
-                  <p style={{ color: "white" }}>diameter:{planet?.diameter}</p>
-                  <p style={{ color: "white" }}>climate:{planet?.climate}</p>
-                  <p style={{ color: "white" }}>gravity:{planet?.gravity}</p>
-                  <p style={{ color: "white" }}>terrain:{planet?.terrain}</p>
-                  <p style={{ color: "white" }}>
-                    surface_water:{planet?.surface_water}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    population:{planet?.population}
-                  </p>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-            <span className="right-container-arrow"></span>
-          </>
-        ) : (
-          <Slider />
-        )}
-      </div>
-      <div className="container left-container">
-        <img src={filmIMG} alt="" />
-        <div className="underImg">
-          StarShips
-          <br />
-          Total:{starShips?.length}
+        <div className="container right-container">
+          <img src={planetIMG} alt="" />
+          <div className="underImg-right ">
+            Planets
+            <br />
+            Total:{planets?.length}
+          </div>
+          {planets?.length > 0 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "400px",
+                }}
+                className="text-box"
+              >
+                {planets?.map((planet, id) => (
+                  <Carousel.Item key={id}>
+                    <h3 style={{ color: "white" }}>{planet?.name}</h3>
+                    <p style={{ color: "white" }}>
+                      rotation_period:{planet?.rotation_period}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      orbital_period:{planet?.orbital_period}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      diameter:{planet?.diameter}
+                    </p>
+                    <p style={{ color: "white" }}>climate:{planet?.climate}</p>
+                    <p style={{ color: "white" }}>gravity:{planet?.gravity}</p>
+                    <p style={{ color: "white" }}>terrain:{planet?.terrain}</p>
+                    <p style={{ color: "white" }}>
+                      surface_water:{planet?.surface_water}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      population:{planet?.population}
+                    </p>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <span className="right-container-arrow"></span>
+            </>
+          ) : (
+            <Planets />
+          )}
         </div>
+        <div className="container left-container">
+          <img src={filmIMG} alt="" />
+          <div className="underImg">
+            StarShips
+            <br />
+            Total:{starShips?.length}
+          </div>
 
-        {starShips?.length > 0 ? (
-          <>
-            <Carousel
-              style={{
-                height: "580px",
-              }}
-              className="text-box"
-            >
-              {starShips?.map((starship, id) => (
-                <Carousel.Item key={id}>
-                  <h3 style={{ color: "white" }}>{starship?.name}</h3>
-                  <p style={{ color: "white" }}>model:{starship?.model}</p>
-                  <p style={{ color: "white" }}>
-                    manufacturer:{starship?.manufacturer}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    cost_in_credits:{starship?.cost_in_credits}
-                  </p>
-                  <p style={{ color: "white" }}>length:{starship?.length}</p>
-                  <p style={{ color: "white" }}>
-                    max_atmosphering_speed:{starship?.max_atmosphering_speed}
-                  </p>
-                  <p style={{ color: "white" }}>crew:{starship?.crew}</p>
-                  <p style={{ color: "white" }}>
-                    passengers:{starship?.passengers}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    cargo_capacity:{starship?.cargo_capacity}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    consumables:{starship?.consumables}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    hyperdrive_rating:{starship?.hyperdrive_rating}
-                  </p>
-                  <p style={{ color: "white" }}>MGLT:{starship?.MGLT}</p>
-                  <p style={{ color: "white" }}>
-                    starship_class:{starship?.starship_class}
-                  </p>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-            <span className="left-container-arrow"></span>
-          </>
-        ) : (
-          <Slider />
-        )}
-        {/* <Film /> */}
-      </div>
-      <div className="container right-container">
-        <img src={speciesIMG} alt="" />
-        <div className="underImg">
-          Vehicles
-          <br />
-          Total:{vehicles?.length}
+          {starShips?.length > 0 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "630px",
+                }}
+                className="text-box"
+              >
+                {starShips?.map((starship, id) => (
+                  <Carousel.Item key={id}>
+                    <h3 style={{ color: "white" }}>{starship?.name}</h3>
+                    <p style={{ color: "white" }}>model:{starship?.model}</p>
+                    <p style={{ color: "white" }}>
+                      manufacturer:{starship?.manufacturer}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      cost_in_credits:{starship?.cost_in_credits}
+                    </p>
+                    <p style={{ color: "white" }}>length:{starship?.length}</p>
+                    <p style={{ color: "white" }}>
+                      max_atmosphering_speed:{starship?.max_atmosphering_speed}
+                    </p>
+                    <p style={{ color: "white" }}>crew:{starship?.crew}</p>
+                    <p style={{ color: "white" }}>
+                      passengers:{starship?.passengers}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      cargo_capacity:{starship?.cargo_capacity}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      consumables:{starship?.consumables}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      hyperdrive_rating:{starship?.hyperdrive_rating}
+                    </p>
+                    <p style={{ color: "white" }}>MGLT:{starship?.MGLT}</p>
+                    <p style={{ color: "white" }}>
+                      starship_class:{starship?.starship_class}
+                    </p>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <span className="left-container-arrow"></span>
+            </>
+          ) : (
+            <Starships />
+          )}
         </div>
-        {vehicles?.length > 0 ? (
-          <>
-            <Carousel
-              style={{
-                height: "580px",
-              }}
-              className="text-box"
-            >
-              {vehicles?.map((vehicle, id) => (
-                <Carousel.Item key={id}>
-                  <h3 style={{ color: "white" }}>{vehicle?.name}</h3>
-                  <p style={{ color: "white" }}>model:{vehicle?.model}</p>
-                  <p style={{ color: "white" }}>
-                    manufacturer:{vehicle?.manufacturer}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    cost_in_credits:{vehicle?.cost_in_credits}
-                  </p>
-                  <p style={{ color: "white" }}>length:{vehicle?.length}</p>
-                  <p style={{ color: "white" }}>
-                    max_atmosphering_speed:{vehicle?.max_atmosphering_speed}
-                  </p>
-                  <p style={{ color: "white" }}>crew:{vehicle?.crew}</p>
-                  <p style={{ color: "white" }}>
-                    passengers:{vehicle?.passengers}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    cargo_capacity:{vehicle?.cargo_capacity}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    consumables:{vehicle?.consumables}
-                  </p>
-                  <p style={{ color: "white" }}>
-                    vehicle_class:{vehicle?.vehicle_class}
-                  </p>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-            <span className="right-container-arrow"></span>
-          </>
-        ) : (
-          <Slider />
-        )}
-      </div>
-      <div className="container left-container">
-        <img src={vehiclesIMG} alt="" />
-        {/* <Vehicles /> */}
-        <Slider />
-      </div>
-      <div className="container right-container">
-        <img src={starShipIMG} alt="" />
-        {/* <Starships /> */}
-        <Slider />
+        <div className="container right-container">
+          <img src={speciesIMG} alt="" />
+          <div className="underImg-right">
+            Vehicles
+            <br />
+            Total:{vehicles?.length}
+          </div>
+          {vehicles?.length > 0 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "520px",
+                }}
+                className="text-box"
+              >
+                {vehicles?.map((vehicle, id) => (
+                  <Carousel.Item key={id}>
+                    <h3 style={{ color: "white" }}>{vehicle?.name}</h3>
+                    <p style={{ color: "white" }}>model:{vehicle?.model}</p>
+                    <p style={{ color: "white" }}>
+                      manufacturer:{vehicle?.manufacturer}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      cost_in_credits:{vehicle?.cost_in_credits}
+                    </p>
+                    <p style={{ color: "white" }}>length:{vehicle?.length}</p>
+                    <p style={{ color: "white" }}>
+                      max_atmosphering_speed:{vehicle?.max_atmosphering_speed}
+                    </p>
+                    <p style={{ color: "white" }}>crew:{vehicle?.crew}</p>
+                    <p style={{ color: "white" }}>
+                      passengers:{vehicle?.passengers}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      cargo_capacity:{vehicle?.cargo_capacity}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      consumables:{vehicle?.consumables}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      vehicle_class:{vehicle?.vehicle_class}
+                    </p>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <span className="right-container-arrow"></span>
+            </>
+          ) : (
+            <Vehicles/>
+          )}
+        </div>
+        <div className="container left-container">
+          <img src={vehiclesIMG} alt="" />
+          <div className="underImg">
+            Species
+            <br />
+            Total:{species?.length}
+          </div>
+          {species?.length > 0 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "470px",
+                }}
+                className="text-box"
+              >
+                {species?.map((type, id) => (
+                  <Carousel.Item key={id}>
+                    <h3 style={{ color: "white" }}>{type?.name}</h3>
+                    <p style={{ color: "white" }}>
+                      classification:{type?.classification}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      designation:{type?.designation}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      average_height:{type?.average_height}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      skin_colors:{type?.skin_colors}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      hair_colors:{type?.hair_colors}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      eye_colors:{type?.eye_colors}
+                    </p>
+                    <p style={{ color: "white" }}>
+                      average_lifespan:{type?.average_lifespan}
+                    </p>
+                    <p style={{ color: "white" }}>language:{type?.language}</p>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+              <span className="left-container-arrow"></span>
+            </>
+          ) : (
+            <Species/>
+          )}
+        </div>
       </div>
     </div>
   );
