@@ -6,7 +6,6 @@ async function getVehicles(vehicle: string): Promise<VehicleModel> {
     try {
         const res = await axios.get<VehicleModel>(vehicle);
         const vehicles = res.data;
-        console.log(vehicles)
         return vehicles;
     }
     catch (err) {

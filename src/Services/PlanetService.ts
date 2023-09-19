@@ -6,7 +6,6 @@ async function getPlanets(planet: string): Promise<PlanetModel> {
     try {
         const res = await axios.get<PlanetModel>(planet);
         const planets = res.data;
-        console.log(planets)
         return planets;
     }
     catch (err) {

@@ -22,7 +22,7 @@ import VehiclesService from "../../Services/VehicleService";
 import SpeciesService from "../../Services/SpeciesService";
 import { AppContext } from "../../Context/appContext";
 import CharacterModel from "../../Models/CharacterModel";
-import Slider from "../Slider/Slider";
+
 function TimeLine(): JSX.Element {
   // const [films, setFilms] = useState<FilmModel>();
   const { currentFilm, setCurrentFilm } = useContext(AppContext);
@@ -51,7 +51,6 @@ function TimeLine(): JSX.Element {
         promises.push(
           PeopleService.getPeople(characters[i])
             .then((res) => {
-              // console.log(res);
               return res;
             })
             .catch((err) => {
@@ -60,14 +59,12 @@ function TimeLine(): JSX.Element {
             })
         );
       }
-      // console.log(promises);
 
       // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
           // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
-          console.log(validResponses);
 
           setPeople(validResponses);
         })
@@ -84,7 +81,6 @@ function TimeLine(): JSX.Element {
         promises.push(
           PlanetService.getPlanets(planetsURLs[i])
             .then((res) => {
-              // console.log(res);
               return res;
             })
             .catch((err) => {
@@ -93,14 +89,12 @@ function TimeLine(): JSX.Element {
             })
         );
       }
-      // console.log(promises);
 
       // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
           // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
-          console.log(validResponses);
 
           setPlanets(validResponses);
         })
@@ -117,7 +111,6 @@ function TimeLine(): JSX.Element {
         promises.push(
           StarShipsService.getStarShips(startShipsURLs[i])
             .then((res) => {
-              // console.log(res);
               return res;
             })
             .catch((err) => {
@@ -126,14 +119,12 @@ function TimeLine(): JSX.Element {
             })
         );
       }
-      // console.log(promises);
 
       // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
           // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
-          console.log(validResponses);
 
           setStarShips(validResponses);
         })
@@ -149,7 +140,6 @@ function TimeLine(): JSX.Element {
         promises.push(
           VehiclesService.getVehicles(vehicleURLs[i])
             .then((res) => {
-              // console.log(res);
               return res;
             })
             .catch((err) => {
@@ -158,14 +148,12 @@ function TimeLine(): JSX.Element {
             })
         );
       }
-      // console.log(promises);
 
       // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
           // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
-          console.log(validResponses);
 
           setVehicles(validResponses);
         })
@@ -181,7 +169,6 @@ function TimeLine(): JSX.Element {
         promises.push(
           SpeciesService.getSpecies(speciesURLs[i])
             .then((res) => {
-              // console.log(res);
               return res;
             })
             .catch((err) => {
@@ -190,25 +177,19 @@ function TimeLine(): JSX.Element {
             })
         );
       }
-      // console.log(promises);
 
       // Use Promise.all to wait for all promises to resolve
       Promise.all(promises)
         .then((responses) => {
           // Filter out any null responses (failed requests)
           const validResponses = responses.filter((res) => res !== null);
-          console.log(validResponses);
-
           setSpecies(validResponses);
         })
         .catch((err) => console.error(err));
     }
   }, [currentFilm]);
 
-  useEffect(() => {
-    console.log("People state has been updated:", people);
-    console.log("People state has been updated:", planets);
-  }, [people]);
+  useEffect(() => {}, [people]);
   useEffect(() => {
     // Your existing code for fetching data
 
@@ -225,18 +206,48 @@ function TimeLine(): JSX.Element {
 
   return (
     <div ref={animationRef} className="timeline">
-      <div style={{ height: "130px", width: "80%", marginBottom: "30px" }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: "30px",
-            color: "lightgreen",
-          }}
-        >
-          Title:{currentFilm?.title}
-        </h2>
-      </div>
-      <div>
+      
+      <div style={{marginTop:"120px"}}>
+        <div className="container right-container">
+          <img src={planetIMG} alt="" />
+          <div className="underImg-right ">
+            Film
+            <br />
+            Name: {currentFilm?.title}
+          </div>
+          {currentFilm?.title.length>1 ? (
+            <>
+              <Carousel
+                style={{
+                  height: "1000px",
+                }}
+                className="text-box"
+              >
+                <Carousel.Item>
+                  <h3 style={{ color: "white" }}>{currentFilm?.title}</h3>
+                  <p style={{ color: "white" }}>
+                    rotation_period:{currentFilm?.episode_id}
+                  </p>
+                  <p style={{ color: "white" }}>
+                    orbital_period:{currentFilm?.opening_crawl}
+                  </p>
+                  <p style={{ color: "white" }}>
+                    director:{currentFilm?.director}
+                  </p>
+                  <p style={{ color: "white" }}>
+                    producer:{currentFilm?.producer}
+                  </p>
+                  <p style={{ color: "white" }}>
+                    release_date:{currentFilm?.release_date}
+                  </p>
+                </Carousel.Item>
+              </Carousel>
+              <span className="right-container-arrow"></span>
+            </>
+          ) : (
+            <Film/>
+          )}
+        </div>
         <div className="container left-container">
           <img src={peopleIMG} alt="" />
           <div className="underImg">
@@ -430,7 +441,7 @@ function TimeLine(): JSX.Element {
               <span className="right-container-arrow"></span>
             </>
           ) : (
-            <Vehicles/>
+            <Vehicles />
           )}
         </div>
         <div className="container left-container">
@@ -479,7 +490,7 @@ function TimeLine(): JSX.Element {
               <span className="left-container-arrow"></span>
             </>
           ) : (
-            <Species/>
+            <Species />
           )}
         </div>
       </div>
