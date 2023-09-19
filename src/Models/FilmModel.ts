@@ -7,7 +7,7 @@ class FilmModel {
     public release_date!: string;
     public characters!: string[];
     public planets!: string[];
-    public starShips!: string[];
+    public starships!: string[];
     public vehicles!: string[];
     public species!: string[];
 

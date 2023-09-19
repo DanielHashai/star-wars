@@ -30,6 +30,7 @@ function TableOfContents(): JSX.Element {
           <div className="toc-content">The Empire Strikes Back</div>
 
           <img className="toc-image" src={filmOne} alt="" />
+          
         </button>
         <button
           onClick={async () => {
